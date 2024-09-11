@@ -77,7 +77,7 @@ class ManageIQ::Providers::Kubevirt::InfraManager::Connection
   # @return [Object] The template object.
   #
   def template(name)
-    @conn.templates.get(name)
+    @conn.templates.find { |template| template.name == name }
   end
 
   #
@@ -106,7 +106,7 @@ class ManageIQ::Providers::Kubevirt::InfraManager::Connection
   # @return [Object] The virtual machine object.
   #
   def vm(name)
-    @conn.vms.get(name)
+    @conn.vms.find { |vm| vm.name == name }
   end
 
   #
@@ -135,7 +135,7 @@ class ManageIQ::Providers::Kubevirt::InfraManager::Connection
   # @return [Object] The virtual machine object.
   #
   def vm_instance(name)
-    @conn.vminstances.get(name)
+    @conn.vminstances.find { |vminstance| vminstance.name == name }
   end
 
   #
