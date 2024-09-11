@@ -297,9 +297,19 @@
           :default: "1024"
           :data_type: :string
       :display: :show
+    :customize:
+      :description: Customize
+      :fields:
+        :root_password:
+          :description: Cloud User Password
+          :required: true
+          :display: :edit
+          :data_type: :string
+      :display: :show
   :dialog_order:
   - :requester
   - :purpose
   - :service
   - :hardware
+  - :customize
   - :schedule
