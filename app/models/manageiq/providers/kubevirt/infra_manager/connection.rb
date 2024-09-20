@@ -17,6 +17,9 @@ class ManageIQ::Providers::Kubevirt::InfraManager::Connection
   def initialize(opts = {})
     require 'fog/kubevirt'
     # create fog based connection
+    @opts = opts
+    @kube_client = create_client
+    @kubevirt_client = kubevirt_client
     @conn = Fog::Kubevirt::Compute.new(
       :kubevirt_hostname  => opts[:host],
       :kubevirt_port      => opts[:port],
@@ -27,6 +30,30 @@ class ManageIQ::Providers::Kubevirt::InfraManager::Connection
 
     # Nothing else is done here, as this method should never throw an exception, even if the
     # credentials are wrong.
+  end
+
+  def create_client(path = "")
+    url = "https://#{@opts[:host]}:#{@opts[:port]}" + path
+    Kubeclient::Client.new(
+      url,
+      "v1",
+      **{
+        :ssl_options  => {
+          :verify_ssl => OpenSSL::SSL::VERIFY_NONE,
+        },
+        :auth_options => {
+          :bearer_token => @opts[:token]
+        }
+      }
+    )
+  end
+
+  def kubevirt_client
+    @kubevirt_client = create_client("/apis/kubevirt.io")
+  end
+
+  def template_client
+    @template_client = create_client("/apis/kubevirt.io")
   end
 
   def virt_supported?
