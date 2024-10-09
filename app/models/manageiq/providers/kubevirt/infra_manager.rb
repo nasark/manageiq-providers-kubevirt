@@ -7,6 +7,7 @@ class ManageIQ::Providers::Kubevirt::InfraManager < ManageIQ::Providers::InfraMa
 
   delegate :authentication_check,
           :authentication_for_summary,
+          :authentication_status,
           :authentication_token,
           :authentications,
           :endpoints,
